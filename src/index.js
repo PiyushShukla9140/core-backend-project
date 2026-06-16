@@ -5,8 +5,18 @@ import express from "express"
 import dotenv from "dotenv"
 import {DB_NAME} from "./constants.js"
 
-
+// as connectDB() is an async function whoch returns promise
 connectDB()
+.then(()=>{
+    app.listen(process.env.PORT||8000,()=>{
+        console.log(`Server is running at port: ${process.env.PORT}`)
+    })
+})
+.catch((err)=>{
+    console.log("MongoDB connection error!!",err)
+})
+
+
 
 const app = express()
 
