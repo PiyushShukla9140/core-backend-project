@@ -19,5 +19,15 @@ app.use(express.urlencoded({extended:true,limit:"16kb"}))
 app.use(express.static("public"))
 app.use(cookieParser())
 
+//routes import 
+import router from "./routes/user.routes.js"
+//routes.declaration
+// cannot use app.get, we need to bring middleware
+// we are going to use app.use
+app.use("/api/v1/users",router)
+
+
+
+
 
 export {app}

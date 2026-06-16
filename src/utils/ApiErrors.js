@@ -3,7 +3,7 @@ class ApiError extends Error{
         statusCode,
         message="Something went wrong",
         errors=[],
-        statck=""
+        stack=""
 
     ){// overiding
         super(message)
@@ -14,8 +14,8 @@ class ApiError extends Error{
         this.errors = errors
 
         // a code written in production grade code
-        if(statck){
-            this.stack=statck
+        if(stack){
+            this.stack=stack
         }else{
             Error.captureStackTrace(this,this.constructor)
         }
