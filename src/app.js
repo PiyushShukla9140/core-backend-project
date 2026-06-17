@@ -8,7 +8,7 @@ const app = express()
 // it is also used for all middlewares
 
 app.use(cors({
-    origin:process.env.CORS_ORIGN,
+    origin:process.env.CORS_ORIGIN,
     credentials:true
 }))
 
