@@ -4,8 +4,8 @@
 // on the basis of that token we can verify whther user is logged in or not
 // if the token is not valid then he is not verified
 // if true login is there then we will add new object in req
-import { ApiError } from "../utils/ApiErrors"
-import { asyncHandler } from "../utils/asyncHandler"
+import { ApiError } from "../utils/ApiErrors.js"
+import { asyncHandler } from "../utils/asyncHandler.js"
 import jwt from "jsonwebtoken"
 
 
