@@ -58,7 +58,6 @@ userSchema.pre("save",async function(next){
     if(!this.isModified("password")) return next();
 
     this.password = await bcrypt.hash(this.password, 10)
-    next();
 
 })
 // like middleware hum kuch custom methods bhi bna skte
@@ -66,6 +65,7 @@ userSchema.pre("save",async function(next){
 
 userSchema.methods.isPasswordCorrect = async function(password){
     return await bcrypt.compare(password,this.password)
+    console.log("Pre save middleware running");
 }
 
 userSchema.methods.generateAccessToken = function(){
