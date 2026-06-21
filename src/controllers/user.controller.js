@@ -4,6 +4,7 @@ import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import { User } from "../models/user.models.js";
 import {ApiResponse} from "../utils/ApiResponse.js"
 import { response } from "express";
+import jwt from "jsonwebtoken";
 
 
  
@@ -56,7 +57,7 @@ const registerUser = asyncHandler(async(req,res)=>{
     }
 
     const avatar = await uploadOnCloudinary(avatarLocalPath)
-    const coverImage = await uploadOnCloudinary(imageLocalPath)
+    const coverImage = await uploadOnCloudinary(coverImageLocalPath)
 
     if (!avatar) {
         throw new ApiError(400, "Avatar file is required")
@@ -90,9 +91,12 @@ const registerUser = asyncHandler(async(req,res)=>{
 const generateAccessAndRefreshToken = async(userId)=>{
     try {
         const user = await User.findById(userId)
+          console.log("User found:", user?._id)
         const accessToken=  user.generateAccessToken()
+        console.log("Access token generated")
         // 
         const refreshToken = user.generateRefreshToken()
+        console.log("Refresh token generated")
         // refresh token ko hum database me rkhte h
         // access token user ko de dete h
         // now saving the access token in the database
@@ -102,6 +106,7 @@ const generateAccessAndRefreshToken = async(userId)=>{
         // now the the refresh token has been added to the user model
         // ab user ko save bhi karana h
         await user.save({validateBeforeSave:false})
+          console.log("User saved")
         // yaha pe mongoose ke model kick in ho jate h 
         // user odel me humne save kraya tha ke passord field bhi requiered h
         // but yaha pe password hai hi nhi 
@@ -122,7 +127,7 @@ const loginUser = asyncHandler(async(req,res)=>{
     // authenticate ho jaaeye toh access or refresh token bhejdo user ko 
     const {email,username,password} = req.body
 
-    if(!username||!username){// depends on the application kya kya chahiyeh
+    if(!(username||email)){// depends on the application kya kya chahiyeh
         throw new ApiError(400,"Username or password is required")
 
     }
@@ -165,12 +170,14 @@ const loginUser = asyncHandler(async(req,res)=>{
 
     return res
     .status(200)
-    .cookie("accesToken",accessToken,options)
+    .cookie("accessToken",accessToken,options)
     .cookie("refreshToken",refreshToken,options)
     .json(
         new ApiResponse(
             200,{
-                user:accessToken,refreshToken,loggedInUser
+                user: loggedInUser,
+                    accessToken,
+                    refreshToken
             },
             "User logged in successfully"
         )
@@ -209,9 +216,77 @@ const logoutUser = asyncHandler(async(req,res)=>{
 })
 
 
+const refreshAccessToken = asyncHandler(async(req,res)=>{
+    // accesing the refresh token
+    const incomingRefreshToken = req.cookies.refreshToken || req.body
+    if(!incomingRefreshToken){
+        throw new ApiError(401, "unauthorized request")
+    }
+
+    // verification of the incoming refresh token
+    // verify krwane ke liye ek secret info aur ek token bhejna padta h
+    // its not necessary decoded token has payload availbae
+    // the payload is the middle part of the token that contains the actual data (claims), 
+    // What it stores: It holds the information you want to transmit, such as the user's _id. In the project shown, the payload specifically contains the _id used to identify and find the user in the database
+
+    try {
+        const decodedToken = jwt.verify(
+            incomingRefreshToken,
+            process.env.REFRESH_TOKEN_SECRET
+        )
+
+        // when we creaated the refresh token in user model we only had ._id filed in it 
+        // now we can access that ._id foeld
+        // now it is a database query so it takes time because database is in another continent
+
+        const user = await User.findById(decodedToken?._id)
+
+        if(!user){
+            throw new ApiError(401,"Refresh Token expired or used")
+        }
+        // now the matching step 
+        if (incomingRefreshToken !== user?.refreshToken) {
+            throw new ApiError(401, "Refresh token is expired or used")
+                
+        }
+
+        const options = {
+            httpOnly: true,
+            secure: true
+        }
+
+        const {accessToken, newRefreshToken} = generateAccessAndRefreshToken(user._id)
+
+        return res
+        .status(200)
+        .cookie("accessToken", accessToken, options)
+        .cookie("refreshToken", newRefreshToken, options)
+        .json(
+            new ApiResponse(
+                200, 
+                {accessToken, refreshToken: newRefreshToken},
+                "Access token refreshed"
+            )
+        )
+    } catch (error) {
+        throw new ApiError(401, error?.message || "Invalid refresh token")
+    }
+
+
+
+})
 
 
 
 
 
-export {registerUser,loginUser,logoutUser}
+
+
+
+
+export {
+    registerUser,
+    loginUser,
+    logoutUser,
+    refreshAccessToken
+}
