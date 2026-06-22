@@ -275,7 +275,125 @@ const refreshAccessToken = asyncHandler(async(req,res)=>{
 
 // Now the update controllers
 
+const changeCurrentPassword = asyncHandler(async(req,res)=>{
+    const {oldPassword,newPassword} = req.body
 
+    // if there is a demand that you shoukd also include confirm password field ,
+    // then destructure the confPassword form the req.body and then 
+    // use if condtion to check whether the newPassword is equal to oldPassword or not
+
+    // agar login hai user tabhi toh password change kr paa rha h
+     const user = await User.findById(req.user?._id)
+    const isPasswordCorrect = await user.isPasswordCorrect(oldPassword)    
+   
+    if (!isPasswordCorrect) {
+        throw new ApiError(400, "Invalid old password")
+    }
+
+    user.password = newPassword
+    await user.save({validateBeforeSave: false})
+    // now thw userSchema.pre save hook in the user model will be called
+
+    return res
+    .status(200)
+    .json(new ApiResponse(200, {}, "Password changed successfully"))
+})
+
+// agar user logged in toh using auth middleware hum boht asani se current user nikal skte h
+const getCurrentUser = asyncHandler(async(req,res)=>{
+    return res
+    .status(200)
+    .json(new ApiResponse(
+        200,
+        req.user,
+        "User fetched successfully"
+    ))
+})
+
+const updateAccountDetails = asyncHandler(async(req, res) => {
+    const {fullName, email} = req.body
+
+    if (!fullName || !email) {
+        throw new ApiError(400, "All fields are required")
+    }
+
+    const user = await User.findByIdAndUpdate(
+        req.user?._id,
+        {
+            $set: {
+                fullName,
+                email: email
+            }
+        },
+        {new: true}
+        
+    ).select("-password")
+
+    return res
+    .status(200)
+    .json(new ApiResponse(200, user, "Account details updated successfully"))
+});
+
+const updateUserAvatar = asyncHandler(async(req,res)=>{
+    const avatarLocalPath = req.file?.path
+     // we got this req.file from the multer middleware
+     // upar files use hua h because multiple file upload option dene the
+    
+    if(!avatarLocalPath){
+        new ApiError(400,"Avatar file is missing")
+    }
+    
+
+    // now upload the file on the cloudinary
+    const avatar = await uploadOnCloudinary(avatarLocalPath)
+    // if uploaded and did not get the url
+
+    if(!avatar.url){
+        throw new ApiError(400,"Error while uploading on avatar")
+    }
+    const user = await User.findByIdAndUpdate(
+        req.user?._id,{
+            $set:{
+                avatar : avatar.url
+            }
+        },{new:true}
+    ).select("-password")
+
+    return res
+    .status(200)
+    .json(
+        new ApiResponse(200,user,"Avatar Inamge has been updated successfully")
+    )
+})
+
+const updateUserCoverImage = asyncHandler(async(req,res)=>{
+    const coverImageLocalPath = req.file?.path
+
+    if(!coverImageLocalPath){
+        throw new ApiError(400,"Cannot find the cover image , cover image is missing")
+    }
+
+    const coverImage = await uploadOnCloudinary(coverImageLocalPath)
+
+    if(!coverImage.url){
+        throw new ApiError(400,"Could not upload the cover image on cloudinary from database")
+    }
+
+    const user = await User.findByIdAndUpdate(
+        req.user?._id,{
+            $set:{
+                coverImage:coverImage.url
+            }
+        },{new:true}
+    ).select("-password")
+
+     return res
+    .status(200)
+    .json(
+        new ApiResponse(200,user,"Avatar Inamge has been updated successfully")
+    )
+
+})
 
 
 
@@ -288,5 +406,12 @@ export {
     registerUser,
     loginUser,
     logoutUser,
-    refreshAccessToken
+    refreshAccessToken,
+    changeCurrentPassword,
+    getCurrentUser,
+    updateAccountDetails,
+    updateUserAvatar,
+    updateUserCoverImage
+    
+
 }
