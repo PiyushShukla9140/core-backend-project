@@ -487,7 +487,7 @@ const getUserChannelProfile = asyncHandler(async(req,res)=>{
         },
         {
             $lookup:{
-                from="subscriptions",// humne model ka Subscription rkha tha lekin databse me naam change ho gya tha
+                from:"subscriptions",// humne model ka Subscription rkha tha lekin databse me naam change ho gya tha
                 localField:"_id",
                 foreignField:"channel",
                 as:"subscribers"
@@ -495,7 +495,7 @@ const getUserChannelProfile = asyncHandler(async(req,res)=>{
         },
         {
            $lookup:{
-                from="subscriptions",// humne model ka Subscription rkha tha lekin databse me naam change ho gya tha
+                from:"subscriptions",// humne model ka Subscription rkha tha lekin databse me naam change ho gya tha
                 localField:"_id",
                 foreignField:"subscriber",
                 as:"subscribedTo"
