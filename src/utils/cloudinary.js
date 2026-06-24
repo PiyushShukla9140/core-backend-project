@@ -29,5 +29,30 @@ const uploadOnCloudinary = async (localFilePath)=>{
     }
 }
 
-export {uploadOnCloudinary}
+const deleteFromCloudinary = async(cloudinaryUrl)=>{
+    try{
+        if(!cloudinaryUrl) return null
+
+        // hum split function ko use krege cloudinary ke url se publicID nikalne ke liye
+        // first step is to cloudinary ke url ko split krna by /
+        // this will give the publicId of the image with extension
+        const publicIdWithExtension = cloudinaryUrl.split("/").pop()
+
+        // now remove yhe .jpg .jpeg .png extension from the above using the split function
+        // isse humko id miljaayegi
+        const publicId = publicIdWithExtension.split(".")[0]
+
+        const response = await cloudinary.uploader.destroy(publicId)
+        if(response?.result !== "ok"){
+        throw new ApiError(500, "Failed to delete image")
+}
+        console.log("Deleted from Cloudinary:", response);
+        return response
+    }catch(error){
+        console.error("Error while deleting the file from cloudinary")
+        return null
+    }
+}
+
+export {uploadOnCloudinary, deleteFromCloudinary}
    

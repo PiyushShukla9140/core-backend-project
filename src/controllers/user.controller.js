@@ -1,6 +1,6 @@
 import { asyncHandler } from "../utils/asyncHandler.js";
 import {ApiError} from "../utils/ApiErrors.js"
-import { uploadOnCloudinary } from "../utils/cloudinary.js";
+import { uploadOnCloudinary, deleteFromCloudinary } from "../utils/cloudinary.js";
 import { User } from "../models/user.models.js";
 import {ApiResponse} from "../utils/ApiResponse.js"
 import { response } from "express";
@@ -334,6 +334,34 @@ const updateAccountDetails = asyncHandler(async(req, res) => {
     .json(new ApiResponse(200, user, "Account details updated successfully"))
 });
 
+const deleteUserAvatar = asyncHandler(async(req,res)=>{
+    const oldAvatar = req.user?.avatar
+
+    if(!oldAvatar){
+        throw new ApiError(400,"User Avatar does not exist")
+    }
+
+    const deleteAvatar = await deleteFromCloudinary(oldAvatar)
+
+    if(!deleteAvatar){
+        throw new ApiError(400,"Error while deleting the avatar")
+    }
+
+    const user = await User.findByIdAndUpdate(
+        req.user?._id,{
+            $set:{
+                avatar:""
+            }
+        },{new:true}
+    ).select("-password")
+
+    return res
+    .status(200)
+    .json(
+        new ApiResponse(200,user,"Avatar deleted successfully")
+    )
+})
+
 const updateUserAvatar = asyncHandler(async(req,res)=>{
     const avatarLocalPath = req.file?.path
      // we got this req.file from the multer middleware
@@ -342,6 +370,8 @@ const updateUserAvatar = asyncHandler(async(req,res)=>{
     if(!avatarLocalPath){
         new ApiError(400,"Avatar file is missing")
     }
+
+    const oldAvtar = req.user?.avatar
     
 
     // now upload the file on the cloudinary
@@ -359,23 +389,65 @@ const updateUserAvatar = asyncHandler(async(req,res)=>{
         },{new:true}
     ).select("-password")
 
+    if(oldAvtar){
+        await deleteFromCloudinary(avatar)
+    }
+
     return res
     .status(200)
     .json(
         new ApiResponse(200,user,"Avatar Inamge has been updated successfully")
     )
 })
+const deleteOldCoverImage = asyncHandler(async(req,res)=>{
+    // check whether user has a coverImage or not
+    // if the user has a cover image then store it into a variable
+    // after storing it into a variable, perform delete operation
+    const oldCoverImage = req.user?.coverImage
+    
+    if(!oldCoverImage){
+        throw new ApiError(400,"No cover image found to delete")
+    }
+
+    const deleteImage = await deleteFromCloudinary(oldCoverImage)
+
+    if(!deleteImage){
+        throw new ApiError(400,"Could not delete image from cloudinary")
+    }
+
+    const user = await User.findByIdAndUpdate(
+        req.user?._id,{
+            $set:{
+                coverImage:""
+            }
+        },{new:true}
+    ).select("-password")
+
+    return res
+    .status(200)
+    .json(
+        new ApiResponse(200,user," CoverImage has been deleted successfully")
+    )
+})
+
 
 const updateUserCoverImage = asyncHandler(async(req,res)=>{
     const coverImageLocalPath = req.file?.path
 
+
     if(!coverImageLocalPath){
         throw new ApiError(400,"Cannot find the cover image , cover image is missing")
     }
+    
+    // if there is a coverImage already there
+    const oldCoverImageUrl = req.user?.coverImage;
+    // delete operation for old coverImage is performed below because
+    // we need the url of old image, agar neeche iss line ko likhte toh nayi image ka url milta 
+    // and nayi image delete hoti
 
     const coverImage = await uploadOnCloudinary(coverImageLocalPath)
 
-    if(!coverImage.url){
+    if(!coverImage?.url){
         throw new ApiError(400,"Could not upload the cover image on cloudinary from database")
     }
 
@@ -387,10 +459,15 @@ const updateUserCoverImage = asyncHandler(async(req,res)=>{
         },{new:true}
     ).select("-password")
 
+
+    if (oldCoverImageUrl) {
+        await deleteFromCloudinary(oldCoverImageUrl);
+    }
+
      return res
     .status(200)
     .json(
-        new ApiResponse(200,user,"Avatar Inamge has been updated successfully")
+        new ApiResponse(200,user,"Cover Image has been updated successfully")
     )
 
 })
@@ -411,7 +488,10 @@ export {
     getCurrentUser,
     updateAccountDetails,
     updateUserAvatar,
-    updateUserCoverImage
+    updateUserCoverImage,
+    deleteOldCoverImage,
+    deleteUserAvatar
+
     
 
 }
