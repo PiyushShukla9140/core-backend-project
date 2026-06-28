@@ -191,7 +191,7 @@ const getLikedVideos = asyncHandler(async (req, res) => {
     const likedVideos = await Like.aggregate([
         {
             $match:{
-                likedBy:userId,
+                likedBy: new mongoose.Types.ObjectId(req.user._id),
                 video:{$exists:true,$ne:null}
                 // get those liked documents jinme video exist krta h and it not empty
 
@@ -222,6 +222,11 @@ const getLikedVideos = asyncHandler(async (req, res) => {
         },
         {
             $unwind:"$ownerDetails"
+        },
+        {
+             $sort:{
+                createdAt:-1
+            }
         },
         {
             $project:{
