@@ -1,0 +1,22 @@
+# Dependencies
+**/node_modules
+
+# Build output
+**/dist
+**/build
+
+# Environment files
+**/.env
+**/.env.*
+
+# IDE
+.vscode
+
+# Coverage
+coverage
+
+# Logs
+*.log
+
+# Lock files (optional)
+package-lock.json

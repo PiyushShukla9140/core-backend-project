@@ -1,24 +1,12 @@
-import { useEffect } from 'react'
-import { getHealth } from "./services/health.service";
+import { RouterProvider } from 'react-router-dom'
+import {router} from './routes/AppRouter.tsx'
+
 
 
 import './App.css'
 
 function App() {
-  useEffect(() => {
-    const fetchHealth = async () => {
-      try {
-        const response = await getHealth();
-        console.log("Backend Response:", response);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    fetchHealth();
-  }, []);
-
-  return <h1>Frontend Connected Successfully</h1>;
+  return <RouterProvider router={router}/>
 }
 
 export default App
