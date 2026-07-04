@@ -4,7 +4,7 @@ import {Video} from "../models/video.model.js"
 import {Comment} from "../models/comment.model.js"
 import { Tweet } from "../models/tweets.model.js"
 import {User} from "../models/user.models.js"
-import {ApiError} from "../utils/ApiError.js"
+import {ApiError} from "../utils/ApiErrors.js"
 import {ApiResponse} from "../utils/ApiResponse.js"
 import {asyncHandler} from "../utils/asyncHandler.js"
 
