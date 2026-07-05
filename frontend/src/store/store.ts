@@ -4,15 +4,37 @@ import {configureStore} from "@reduxjs/toolkit"
 // (which required a lot of boilerplate in older Redux),
 // Redux Toolkit gives us a cleaner, production-ready setup.
 
+import authReducer from "../features/auth/authSlice";
+import {persistReducer, persistStore} from "redux-persist"
+import {combineReducers} from "@reduxjs/toolkit"
+
+import  storage  from "redux-persist/lib/storage";
+
+
+const rootReducer = combineReducers({
+    auth:authReducer
+})
+
+const persistConfig = {
+    key: "root",
+    storage,
+    whitelist: ["auth"],
+};
+
+const persistedReducer = persistReducer(
+    persistConfig,
+    rootReducer
+);
 
 
 export const store = configureStore({
     //This creates the application's only Redux Store.
-    reducer:{},
+    reducer:persistedReducer
     //This reducer:{} tells Redux: 
     //"These are all the slices that belong to the store."
 })
 
+export const persistor = persistStore(store);
 // export types
 export type RootState = ReturnType<typeof store.getState>;
 //This automatically creates the type of our entire Redux state.

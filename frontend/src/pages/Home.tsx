@@ -1,9 +1,15 @@
-import React from 'react'
+import { useAppSelector } from "../store/hooks";
 
-const Home = ()=> {
-  return (
-    <h1>Home Page</h1>
-  )
-}
+const Home = () => {
+    const auth = useAppSelector((state) => state.auth);
 
-export default Home
+    return (
+        <div>
+            <h1>Home Page</h1>
+
+            <pre>{JSON.stringify(auth, null, 2)}</pre>
+        </div>
+    );
+};
+
+export default Home;
