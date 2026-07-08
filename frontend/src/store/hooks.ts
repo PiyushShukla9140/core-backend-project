@@ -4,7 +4,7 @@ import {
 } from "react-redux";
 import type { TypedUseSelectorHook } from "react-redux";
 
-import type { RootState, AppDispatch } from "./store";
+import type { RootState, AppDispatch } from "./store.ts";
 
 // Type-Safe Dispatch Hook
 
