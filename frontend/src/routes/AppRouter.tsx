@@ -11,6 +11,9 @@ import NotFound from '../pages/NotFound.tsx'
 import SignUp from '../pages/Signup.tsx'
 import Watch from '../pages/Watch.tsx'
 
+import ProtectedRoute from "./ProtectedRoute.tsx";
+import PublicRoute from './PublicRoute.tsx'
+
 export const router = createBrowserRouter([
     {
         path: "/",
@@ -26,7 +29,11 @@ export const router = createBrowserRouter([
             },
             {
                 path: "dashboard",
-                element: <Dashboard />,
+                element: (
+                    <ProtectedRoute>
+                        <Dashboard/>
+                    </ProtectedRoute>
+                ),
             },
         ],
     },
@@ -35,11 +42,19 @@ export const router = createBrowserRouter([
         children:[
             {
                 path:"/login",
-                element:<Login/>
+                element:(
+                    <PublicRoute>
+                        <Login/>
+                    </PublicRoute>
+                )
             },
             {
                 path: "/signup",
-                element: <SignUp />,
+                element: (
+                    <PublicRoute>
+                        <SignUp/>
+                    </PublicRoute>
+                ),
             }
         ]
     },

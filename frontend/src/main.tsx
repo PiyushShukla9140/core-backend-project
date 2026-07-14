@@ -4,6 +4,8 @@ import './index.css'
 import App from './App.tsx'
 
 import { PersistGate } from "redux-persist/integration/react";
+import {Toaster} from "sonner"
+
 
 
 
@@ -16,6 +18,12 @@ createRoot(document.getElementById('root')!).render(
 
         <PersistGate loading={null} persistor={persistor}>
           <App/>
+           <Toaster
+            position="top-right"
+            richColors
+            closeButton
+            duration={3000}
+          />
         </PersistGate>
     </Provider>
   </StrictMode>,
