@@ -1,4 +1,5 @@
 import axios from "axios";
+import {setupInterceptors} from "@/api/interceptors"
 
 const api = axios.create({
   // axios.craate = This creates our own customized Axios client.
@@ -21,5 +22,7 @@ const api = axios.create({
     "Content-Type": "application/json",
   },//Most of our requests are JSON.
 });
+// Register all interceptors
+setupInterceptors(api);
 
 export default api;

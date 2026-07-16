@@ -1,8 +1,10 @@
-import React from 'react'
+import SignUpForm from "@/components/auth/SignUpForm"
 
 const SignUp = ()=> {
   return (
-    <h1>SignUp Page</h1>
+    <main className="min-h-screen w-full flex items-center justify-center bg-gray-400 p-4">
+      <SignUpForm />
+    </main>
   )
 }
 

@@ -7,7 +7,7 @@ import type { User } from "../../types/user.types.ts";
 // AuthState interface
 interface AuthState {
   user: User | null;
-  accessToken:String|null;
+  accessToken:string|null;
   isAuthenticated: boolean;
   loading: boolean;
   error: string | null;
@@ -53,7 +53,7 @@ const authSlice = createSlice({
 
             state.error = null;
         },
-        loginFailure(state,action){
+        loginFailure(state,action: PayloadAction<string>){
             state.loading = false,
             state.error = action.payload
         },

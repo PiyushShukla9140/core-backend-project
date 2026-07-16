@@ -21,11 +21,17 @@ const authService = {
         return response.data;
     },
 
-    signup: async (data: SignupRequest) => {
+    signup: async (formData: FormData) => {
         const response = await api.post<ApiResponse<AuthResponse>>
-        (
+        ( // because signup form receives images therefore we updated it 
             API_ENDPOINTS.AUTH.REGISTER,
-            data
+            formData,
+            {
+                headers:{
+                    "Content-Type":
+                    "multipart/form-data"
+                },
+            }
         );
 
         return response.data;
