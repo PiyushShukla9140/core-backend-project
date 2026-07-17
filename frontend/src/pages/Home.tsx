@@ -1,14 +1,42 @@
-import { useAppSelector } from "../store/hooks";
+
+import VideoGrid from "@/components/video/videoGrid";
+import VideoSkeleton from "@/components/video/videoSkeleton";
+import useVideos from "@/hooks/useVideo";
+
 
 const Home = () => {
-    const auth = useAppSelector((state) => state.auth);
+     const {
+        videos,
+        loading,
+        error,
+    } = useVideos();
+
+
+    if(loading){
+        return (
+            <div className="p-8">
+                <VideoSkeleton/>
+            </div>
+        )
+    }
+    if (error) {
+        return (
+            <div className="p-6 text-red-500">
+                {error}
+            </div>
+        );
+    }
 
     return (
-        <div>
-            <h1>Home Page</h1>
-
-            <pre>{JSON.stringify(auth, null, 2)}</pre>
+       <main>
+        <div className="mx-auto max-w-7xl px-6 py-8">
+            <h1 className="mb-8 3xl font-bold tracking-tight">
+                Home feed
+            </h1>
         </div>
+         <VideoGrid videos={videos} />
+       </main>
+         
     );
 };
 
