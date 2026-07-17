@@ -1,7 +1,7 @@
 
 import VideoGrid from "@/components/video/videoGrid";
 import VideoSkeleton from "@/components/video/videoSkeleton";
-import useVideos from "@/hooks/useVideo";
+import useVideos from "@/hooks/useVideos";
 
 
 const Home = () => {

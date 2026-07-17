@@ -1,3 +1,4 @@
+// only for the home feed where many videos will be displayed
 import { useEffect, useState } from "react";
 
 import axios from "axios";
@@ -6,32 +7,25 @@ import videoService from "@/services/videoService";
 
 import type { Video } from "@/types/video.types";
 
-const useVideo = (videoId: string) => {
-  const [video, setVideo] = useState<Video | null>(
-    null
-  );
+const useVideos = () => {
+  const [videos, setVideos] = useState<Video[]>([]);
 
-  const [loading, setLoading] =
-    useState(true);
+  const [loading, setLoading] = useState(true);
 
   const [error, setError] = useState("");
 
   useEffect(() => {
-    if (!videoId) return;
-
-    const fetchVideo = async () => {
+    const fetchVideos = async () => {
       try {
         const response =
-          await videoService.getVideoById(
-            videoId
-          );
+          await videoService.getAllVideos();
 
-        setVideo(response.data);
+        setVideos(response.data.videos);
       } catch (err) {
         if (axios.isAxiosError(err)) {
           setError(
             err.response?.data?.message ??
-              "Failed to fetch video"
+              "Failed to fetch videos"
           );
         } else {
           setError("Something went wrong");
@@ -41,14 +35,14 @@ const useVideo = (videoId: string) => {
       }
     };
 
-    fetchVideo();
-  }, [videoId]);
+    fetchVideos();
+  }, []);
 
   return {
-    video,
+    videos,
     loading,
     error,
   };
 };
 
-export default useVideo;
+export default useVideos;
