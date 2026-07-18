@@ -1,8 +1,8 @@
 export interface CommentOwner{
-    _id:string,
-    username:string,
-    fullName:string,
-    avatar:string,
+    _id: "$userDetails._id",
+    username: "$userDetails.username",
+    fullName: "$userDetails.fullName",
+    avatar: "$userDetails.avatar"
 }
 
 export interface Comment{
@@ -11,4 +11,10 @@ export interface Comment{
     owner:CommentOwner,
     createdAt:string,
     updatedAt:string
+}
+
+export interface CommentResponse {
+    statusCode: number;
+    message: string;
+    data: Comment[];
 }
