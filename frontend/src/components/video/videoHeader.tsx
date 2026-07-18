@@ -6,16 +6,16 @@ interface VideoInfoProps{
     title:string,
     createdAt:string,
     views:number,
-    description:string
+   
 }
 
 
-const VideoInfo = (
+const VideoHeader = (
     {
         title,
         createdAt,
         views,
-        description
+        
     }:VideoInfoProps
 )=>{
     return(
@@ -35,9 +35,7 @@ const VideoInfo = (
                      </div>
                    
                 </div>
-                 <p className="whitespace-pre-wrap text-sm leading-6 text-muted-foreground">
-                        {description}
-                </p>
+                
                
 
                 {/* a div for both the buttons (share and like) */}
@@ -65,4 +63,4 @@ const VideoInfo = (
     )
 }
 
-export default VideoInfo
+export default VideoHeader

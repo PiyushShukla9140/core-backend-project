@@ -7,7 +7,7 @@ function MainLayout() {
     <>
         <h2>Navbar</h2>
         <Outlet/>
-        <h2>Footer</h2>
+       
     </>
   )
 }
