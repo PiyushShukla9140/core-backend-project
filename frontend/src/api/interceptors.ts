@@ -15,6 +15,8 @@ export const setupInterceptors = (
       const token =
         store.getState().auth.accessToken;
 
+         console.log("Redux Token:", token);
+
       // Attach Authorization header
       if (token) {
         config.headers.Authorization =

@@ -6,6 +6,7 @@ import ChannelCard from "@/components/video/channelCard"
 import VideoDescription from "@/components/video/videoDescription"
 import SuggestedVideos from "@/components/video/suggestedVideos"
 import useVideos from "@/hooks/useVideos"
+import CommentSection from "@/components/comments/CommentSection"
 const  Watch = ()=> {
   const{videoId} = useParams()
 
@@ -68,6 +69,9 @@ const  Watch = ()=> {
           username={video.owner.username}
         />
         {/* comments */}
+        <CommentSection
+          videoId={video._id}
+        />
         </div>
 
         {/* right side */}

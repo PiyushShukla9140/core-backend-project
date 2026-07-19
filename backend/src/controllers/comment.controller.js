@@ -74,6 +74,7 @@ const getVideoComments = asyncHandler(async (req, res) => {
                 content:1,
                 createdAt:1,
                 owner:{
+                    _id:"$userDetails._id",
                     username:"$userDetails.username",
                     fullName:"$userDetails.fullName",
                     avatar:"$userDetails.avatar"         
@@ -132,7 +133,7 @@ const addComment = asyncHandler(async (req, res) => {
         throw new ApiError(500,"Error adding the comment")
       }
 
-      const populatedComment = await Comment.findById(newComment._id)
+      const populatedComment = await Comment.findById(createComment._id)
       .populate("owner","username fullName avatar");
 
       return res

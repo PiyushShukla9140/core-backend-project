@@ -1,42 +1,50 @@
-import { useState,useEffect } from "react"
+import { useCallback, useEffect, useState } from "react";
+import axios from "axios";
 
-import axios from "axios"
+import commentService from "@/services/commentService";
+import type { Comment } from "@/types/comment.types";
 
-import CommentService from "@/services/commentService"
-import type { Comment } from "@/types/comment.types"
+const useComments = (videoId: string) => {
+  const [comments, setComments] = useState<Comment[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
+  const fetchComments = useCallback(async () => {
+    if (!videoId) return;
 
-const UseComments = (videoId:string) => {
-    const [comments,setComments] = useState<Comment[]>([])
+    try {
+      setLoading(true);
 
-    const [loading,setLoading] = useState(true)
+      const response =
+        await commentService.getComments(videoId);
 
-    const [error,setError] = useState("")
+      setComments(response.data.data);
 
-    useEffect(()=>{
-        if(!videoId) return;
+      setError("");
+    } catch (err) {
+      if (axios.isAxiosError(err)) {
+        setError(
+          err.response?.data?.message ??
+            "Failed to fetch comments"
+        );
+      } else {
+        setError("Something went wrong");
+      }
+    } finally {
+      setLoading(false);
+    }
+  }, [videoId]);
 
-        const fetchComments = async ()=>{
-            try{
-                 const response = await CommentService.getComments(videoId)
-                 setComments(response.data.data)
-            }catch(error){
-                if(axios.isAxiosError(error)){
-                    setError(error.response?.data?.message ??
-                        "Failed to fetch comments"
-                    )
-                }else{
-                    setError("Something went wrong")
-                }
-            }finally{
-                setLoading(false)
-            }
-        };
+  useEffect(() => {
+    fetchComments();
+  }, [fetchComments]);
 
-        fetchComments()
-
-
-    },[videoId])
-}
-
-export default UseComments
+  return {
+    comments,
+    loading,
+    error,
+    refetchComments: fetchComments,
+  };
+};
+// we use useCallback because fetchComments is used inside useEffect. This keeps the function reference stable and avoids unnecessary effect reruns.
+export default useComments;
