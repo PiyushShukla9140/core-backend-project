@@ -32,3 +32,10 @@ export interface GetVideosResponse {
 
   pagination: Pagination;
 }
+
+export interface PublishVideoPayload {
+  title: string;
+  description: string;
+  thumbnail: File;
+  videoFile: File;
+}

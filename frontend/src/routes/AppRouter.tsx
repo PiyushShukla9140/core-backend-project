@@ -10,6 +10,7 @@ import Login from '../pages/Login.tsx'
 import NotFound from '../pages/NotFound.tsx'
 import SignUp from '../pages/Signup.tsx'
 import Watch from '../pages/Watch.tsx'
+import UploadVideoPage from '@/pages/uploadVideo.tsx'
 
 import ProtectedRoute from "./ProtectedRoute.tsx";
 import PublicRoute from './PublicRoute.tsx'
@@ -34,6 +35,14 @@ export const router = createBrowserRouter([
                         <Dashboard/>
                     </ProtectedRoute>
                 ),
+            },
+            {
+                path:"upload",
+                element:(
+                    <ProtectedRoute>
+                        <UploadVideoPage/>
+                    </ProtectedRoute>
+                )
             },
         ],
     },
