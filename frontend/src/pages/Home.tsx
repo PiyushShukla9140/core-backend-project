@@ -3,12 +3,15 @@ import VideoGrid from "@/components/video/videoGrid";
 import VideoSkeleton from "@/components/video/videoSkeleton";
 import useVideos from "@/hooks/useVideos";
 
+import ErrorState from "@/components/common/ErrorState";
+
 
 const Home = () => {
      const {
         videos,
         loading,
         error,
+        refetch
     } = useVideos();
 
 
@@ -20,20 +23,16 @@ const Home = () => {
         )
     }
     if (error) {
-        return (
-            <div className="p-6 text-red-500">
-                {error}
-            </div>
+        return ( 
+            <ErrorState
+              message={error}
+              onRetry={refetch}
+            />
         );
     }
 
     return (
        <main>
-        <div className="mx-auto max-w-7xl px-6 py-8">
-            <h1 className="mb-8 3xl font-bold tracking-tight">
-                Home feed
-            </h1>
-        </div>
          <VideoGrid videos={videos} />
        </main>
          

@@ -1,5 +1,5 @@
 // only for the home feed where many videos will be displayed
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import axios from "axios";
 
@@ -13,14 +13,17 @@ const useVideos = () => {
   const [loading, setLoading] = useState(true);
 
   const [error, setError] = useState("");
+  const fetchVideos = useCallback(async () => {
+      setLoading(true)
+      setError("")
 
-  useEffect(() => {
-    const fetchVideos = async () => {
+
       try {
+        
         const response =
           await videoService.getAllVideos();
 
-        setVideos(response.data.videos);
+        setVideos(response.data?.videos ?? []);
       } catch (err) {
         if (axios.isAxiosError(err)) {
           setError(
@@ -33,15 +36,19 @@ const useVideos = () => {
       } finally {
         setLoading(false);
       }
-    };
+    },[])
+
+  useEffect(() => {
+    
 
     fetchVideos();
-  }, []);
+  }, [fetchVideos]);
 
   return {
     videos,
     loading,
     error,
+    refetch: fetchVideos
   };
 };
 

@@ -17,14 +17,16 @@ const VideoCard = ({
 }: VideoCardProps) => {
   return (
     <Link
+      aria-label={`Watch ${video.title}`}
       to={`/watch/${video._id}`}
-      className="group block cursor-pointer rounded-xl transition-all duration-300 hover:shadow-lg"
-    >
+      className="group block cursor-pointer rounded-xl transition-all duration-300 hover:shadow-lg hover:-translate-y-1
+      focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"> 
       {/* Thumbnail */}
       <div className="relative overflow-hidden rounded-xl">
         <img
           src={video.thumbnail}
           alt={video.title}
+          loading="lazy"
           className="aspect-video w-full object-cover transition-transform duration-300 group-hover:scale-105"
         />
 
@@ -40,6 +42,7 @@ const VideoCard = ({
         <img
           src={video.owner.avatar}
           alt={video.owner.username}
+          loading="lazy"
           className="h-9 w-9 rounded-full object-cover"
         />
 
