@@ -10,6 +10,7 @@ export const API_ENDPOINTS = {
         CHANGE_PASSWORD: "/users/change-password",
         UPDATE_AVATAR: "/users/avatar",
         UPDATE_COVER_IMAGE: "/users/cover-image",
+        WATCH_HISTORY:"/users/history"
     },
     VIDEOS:{
         GET_ALL: "/videos",

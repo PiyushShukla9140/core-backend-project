@@ -10,10 +10,11 @@ import Login from '../pages/Login.tsx'
 import NotFound from '../pages/NotFound.tsx'
 import SignUp from '../pages/Signup.tsx'
 import Watch from '../pages/Watch.tsx'
-import UploadVideoPage from '@/pages/uploadVideo.tsx'
-
+import UploadVideoPage from '@/pages/UploadVideo.tsx'
+import Search from '@/pages/Search.tsx'
 import ProtectedRoute from "./ProtectedRoute.tsx";
 import PublicRoute from './PublicRoute.tsx'
+import History from '@/pages/History.tsx'
 
 export const router = createBrowserRouter([
     {
@@ -44,6 +45,23 @@ export const router = createBrowserRouter([
                     </ProtectedRoute>
                 )
             },
+            {
+                path:"search",
+                element:(
+                    <PublicRoute>
+                        <Search/>
+                    </PublicRoute>
+                )
+            },
+            {
+                path:"history",
+                element:(
+                    <ProtectedRoute>
+                        <History/>
+                    </ProtectedRoute>
+                )
+            }
+
         ],
     },
     {

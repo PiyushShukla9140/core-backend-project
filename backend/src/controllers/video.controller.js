@@ -231,6 +231,28 @@ const getVideoById = asyncHandler(async (req, res) => {
     if (!video) {
         throw new ApiError(404, "Video doesn't exist")
     }
+    console.log("User:", req.user);
+    console.log("Video:", video._id);
+
+    if (req.user?._id) {
+        await User.findByIdAndUpdate(
+            req.user._id,
+            {
+                $pull: {
+                    watchHistory: video._id,
+                },
+            }
+        );
+
+        await User.findByIdAndUpdate(
+            req.user._id,
+            {
+                $push: {
+                    watchHistory: video._id,
+                },
+            }
+        );
+    }
 
     // if the database fails then async handler will handle the error here 
 

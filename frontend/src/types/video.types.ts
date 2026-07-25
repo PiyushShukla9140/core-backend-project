@@ -39,3 +39,12 @@ export interface PublishVideoPayload {
   thumbnail: File;
   videoFile: File;
 }
+
+export interface GetVideosParams {
+  page?: number;
+  limit?: number;
+  query?: string;
+  sortBy?: string;
+  sortType?: "asc" | "desc";
+  userId?: string;
+}
