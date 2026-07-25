@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Upload } from "lucide-react";
 
@@ -8,9 +9,13 @@ import {
   AvatarImage,
 } from "@/components/ui/avatar";
 
-const UserMenu = ()=> {
+import UserDropdown from "./userDropDrown";
+
+function UserMenu() {
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
-    <div className="flex items-center gap-3">
+    <div className="relative flex items-center gap-4">
       <Button asChild variant="outline">
         <Link to="/upload">
           <Upload className="mr-2 h-4 w-4" />
@@ -22,18 +27,21 @@ const UserMenu = ()=> {
         variant="ghost"
         size="icon"
         className="rounded-full p-0"
+        onClick={() => setIsOpen((prev) => !prev)}
       >
-        <Avatar className="h-9 w-9">
-          <AvatarImage
-            src=""
-            alt="User Avatar"
-          />
+        <Avatar className="h-10 w-10">
+          <AvatarImage src="" />
 
-          <AvatarFallback>
-            U
+          <AvatarFallback className="bg-red-500 text-white font-semibold">
+            PS
           </AvatarFallback>
         </Avatar>
       </Button>
+
+      <UserDropdown
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+      />
     </div>
   );
 }
