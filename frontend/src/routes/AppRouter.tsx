@@ -1,4 +1,3 @@
-import React from 'react'
 
 import { createBrowserRouter } from 'react-router-dom'
 import MainLayout from '../layouts/MainLayout.tsx'
@@ -15,6 +14,8 @@ import Search from '@/pages/Search.tsx'
 import ProtectedRoute from "./ProtectedRoute.tsx";
 import PublicRoute from './PublicRoute.tsx'
 import History from '@/pages/History.tsx'
+import Playlists from '@/pages/Playlist.tsx'
+import PlaylistDetail from '@/pages/playlistDetails.tsx'
 
 export const router = createBrowserRouter([
     {
@@ -60,6 +61,18 @@ export const router = createBrowserRouter([
                         <History/>
                     </ProtectedRoute>
                 )
+            },
+            {
+                path:"playlists",
+                element:(
+                    <ProtectedRoute>
+                        <Playlists/>
+                    </ProtectedRoute>
+                )
+            },
+            {
+                path:"playlists/:playlistId",
+                element:<PlaylistDetail/>
             }
 
         ],

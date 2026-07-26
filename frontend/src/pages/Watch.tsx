@@ -7,6 +7,7 @@ import VideoDescription from "@/components/video/videoDescription"
 import SuggestedVideos from "@/components/video/suggestedVideos"
 import useVideos from "@/hooks/useVideos"
 import CommentSection from "@/components/comments/CommentSection"
+import VideoActions from "@/components/video/VideoActions"
 const  Watch = ()=> {
   const{videoId} = useParams()
 
@@ -53,10 +54,10 @@ const  Watch = ()=> {
         />
         {/* video header */}
         <VideoHeader
-          title={video.title}
-          views={video.views}
-          createdAt={video.createdAt}
+          video={video}
         />
+
+        
         {/* video description */}
         <VideoDescription
           description={video.description}

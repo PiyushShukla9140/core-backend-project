@@ -14,6 +14,7 @@ import { AlertTriangle, RefreshCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 interface ErrorStateProps{
+    title?:string;
     message:string;
     onRetry?:()=>void
     //onRetry is optional because not every error screen needs a retry button.
@@ -21,7 +22,8 @@ interface ErrorStateProps{
 }
 
 const ErrorState = ({
-  message,
+  title="Something went wrong",
+  message="An unexpected error occured",
   onRetry,
 }: ErrorStateProps) => {
   return (

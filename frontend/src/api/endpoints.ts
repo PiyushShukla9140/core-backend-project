@@ -28,7 +28,7 @@ export const API_ENDPOINTS = {
         DELETE: (commentId: string) => `/comments/c/${commentId}`,
     },
     PLAYLISTS:{
-         CREATE: "/playlist",
+        CREATE: "/playlist",
         GET_BY_ID: (playlistId: string) => `/playlist/${playlistId}`,
         UPDATE: (playlistId: string) => `/playlist/${playlistId}`,
         DELETE: (playlistId: string) => `/playlist/${playlistId}`,
