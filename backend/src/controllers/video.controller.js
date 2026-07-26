@@ -7,6 +7,9 @@ import { asyncHandler } from "../utils/asyncHandler.js"
 import { uploadOnCloudinary, deleteFromCloudinary } from "../utils/cloudinary.js"
 import fs from "fs";
 
+
+import {Like} from "../models/like.model.js"
+
 // Helper function to pull Cloudinary Public ID from its long absolute secure URL link
 const getCloudinaryPublicId = (url) => {
     if (!url) return null;
@@ -231,8 +234,6 @@ const getVideoById = asyncHandler(async (req, res) => {
     if (!video) {
         throw new ApiError(404, "Video doesn't exist")
     }
-    console.log("User:", req.user);
-    console.log("Video:", video._id);
 
     if (req.user?._id) {
         await User.findByIdAndUpdate(
@@ -256,10 +257,32 @@ const getVideoById = asyncHandler(async (req, res) => {
 
     // if the database fails then async handler will handle the error here 
 
+    const likesCount = await Like.countDocuments({
+        video: video._id,
+    });
+
+    const isLiked = !!(
+        req.user?._id &&
+        await Like.exists({
+            video: video._id,
+            likedBy: req.user._id,
+        })
+    );
+
+// countDocuments gives the total number of likes for the video.
+// Like.exists checks whether the logged-in user has liked it. Using !! converts the result into a simple true or false.
+
 
     return res
         .status(200)
-        .json(new ApiResponse(200, video, "Video fetched successfully"))
+        .json(new ApiResponse(
+                200, 
+                {
+                    ...video.toObject(),
+                    likesCount,
+                    isLiked,
+                }, 
+                "Video fetched successfully"))
 });
 
 const updateVideo = asyncHandler(async (req, res) => {
@@ -393,11 +416,47 @@ const togglePublishStatus = asyncHandler(async (req, res) => {
     );
 });
 
+const getChannelVideos = asyncHandler(async (req, res) => {
+    const { username } = req.params;
+
+    if (!username?.trim()) {
+        throw new ApiError(400, "Username is required");
+    }
+
+    const channel = await User.findOne({
+        username: username.toLowerCase(),
+    }).select("_id");
+
+    if (!channel) {
+        throw new ApiError(404, "Channel not found");
+    }
+
+    const videos = await Video.find({
+        owner: channel._id,
+    })
+        .sort({
+            createdAt: -1,
+        })
+        .populate(
+            "owner",
+            "username fullName avatar"
+        );
+
+    return res.status(200).json(
+        new ApiResponse(
+            200,
+            videos,
+            "Channel videos fetched successfully"
+        )
+    );
+});
+
 export {
     getAllVideos,
     publishAVideo,
     getVideoById,
     updateVideo,
     deleteVideo,
-    togglePublishStatus
+    togglePublishStatus,
+    getChannelVideos
 }

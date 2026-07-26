@@ -33,6 +33,12 @@ const toggleVideoLike = asyncHandler(async (req, res) => {
 
     const video = await Video.findById(videoId);
 
+    const getLikesCount = async (videoId) => {
+        return await Like.countDocuments({
+            video: videoId,
+        });
+    };
+
     if (!video) {
         throw new ApiError(404, "Video not found");
     }
@@ -49,9 +55,10 @@ const toggleVideoLike = asyncHandler(async (req, res) => {
     })
 
     if(existingLike){
+        const likesCount = await getLikesCount(videoId)
         return res
         .status(200)
-        .json(new ApiResponse(200,{isLiked:false},"Video unliked successfully"))
+        .json(new ApiResponse(200,{isLiked:false,likesCount},"Video unliked successfully"))
     }
 
    
@@ -64,10 +71,13 @@ const toggleVideoLike = asyncHandler(async (req, res) => {
         throw new ApiError(500, "Error while processing the like video request");
     }
 
+
+    const likesCount = await getLikesCount(videoId);
+
     return res
         .status(200)
         .json(
-            new ApiResponse(200, { isLiked: true }, "Video liked successfully")
+            new ApiResponse(200, { isLiked: true ,likesCount}, "Video liked successfully")
         );
     
 })

@@ -40,7 +40,7 @@ const  Watch = ()=> {
     )
   }
 
-  
+  console.log(video.owner);
 
   return (
     <div className="mx-auto max-w-[1700px] px-6 py-8">

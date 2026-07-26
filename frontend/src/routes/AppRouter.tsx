@@ -15,7 +15,9 @@ import ProtectedRoute from "./ProtectedRoute.tsx";
 import PublicRoute from './PublicRoute.tsx'
 import History from '@/pages/History.tsx'
 import Playlists from '@/pages/Playlist.tsx'
-import PlaylistDetail from '@/pages/playlistDetails.tsx'
+import PlaylistDetail from '@/pages/PlaylistDetails.tsx'
+import LikedVideos from '@/pages/LikedVideos.tsx'
+import Channel from '@/pages/Channel.tsx'
 
 export const router = createBrowserRouter([
     {
@@ -73,6 +75,18 @@ export const router = createBrowserRouter([
             {
                 path:"playlists/:playlistId",
                 element:<PlaylistDetail/>
+            },
+            {
+                path:"liked-videos",
+                element:(
+                    <ProtectedRoute>
+                        <LikedVideos/>
+                    </ProtectedRoute>
+                )
+            },
+            {
+                path:"channel/:username",
+                element:(<Channel/>)
             }
 
         ],

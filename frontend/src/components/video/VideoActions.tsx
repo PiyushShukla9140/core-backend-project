@@ -1,10 +1,12 @@
-import { Bookmark, Share2, ThumbsUp } from "lucide-react";
+import { Bookmark, Share2} from "lucide-react";
 
 import SaveToPlaylistDialog from "../playlist/SaveToPlaylistDialog";
 
 import { Button } from "@/components/ui/button";
 
 import type { Video } from "@/types/video.types";
+import { LikeButton } from "../like/Likebutton";
+
 
 interface VideoActionsProps {
   video: Video;
@@ -29,20 +31,10 @@ const VideoActions = ({ video }: VideoActionsProps) => {
   return (
     <div className="flex flex-wrap items-center gap-3">
       {/* Like */}
-      <Button
-        variant="secondary"
-        className="rounded-full
-            bg-gray-200
-            hover:bg-gray-300
-            transition-colors
-            gap-2
-            px-4
-            py-2
-            h-auto"
-      >
-        <ThumbsUp className="h-4 w-4" />
-        Like
-      </Button>
+      <LikeButton
+          video={video}
+          
+      />
 
       {/* Save */}
       <SaveToPlaylistDialog videoId={video._id}>

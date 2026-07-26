@@ -41,7 +41,7 @@ const primaryItems = [
 
 const secondaryItems = [
   {
-    to: "/liked",
+    to: "/liked-videos",
     icon: ThumbsUp,
     label: "Liked Videos",
   },

@@ -16,6 +16,8 @@ export interface Video{
     createdAt: string;
     isPublished: boolean;
     owner: VideoOwner;
+    likesCount: number;
+    isLiked: boolean;
 
 }
 export interface Pagination {
