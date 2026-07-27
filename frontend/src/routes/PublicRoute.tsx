@@ -13,7 +13,7 @@ const PublicRoute = ({ children }: PublicRouteProps) => {
   );
 
   if (isAuthenticated && accessToken) {
-    return <Navigate to="/dashboard" replace />;
+    return <Navigate to="/" replace />;
   }
 
   return <>{children}</>;

@@ -1,6 +1,5 @@
 import {
   House,
-  User,
   Upload,
   History,
   ListVideo,
@@ -17,11 +16,7 @@ const primaryItems = [
     icon: House,
     label: "Home",
   },
-  {
-    to: "/channel",
-    icon: User,
-    label: "Your Channel",
-  },
+  
   {
     to: "/upload",
     icon: Upload,

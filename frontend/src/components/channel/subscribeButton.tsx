@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import {  useState } from "react";
+import type{Dispatch, SetStateAction,} from "react"
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
@@ -6,21 +7,18 @@ import { channelService } from "@/services/channelService";
 
 interface SubscribeButtonProps {
     channelId: string;
-    initialSubscribed: boolean;
+    isSubscribed: boolean;
+    setIsSubscribed: Dispatch<SetStateAction<boolean>>;
+    setSubscribersCount: Dispatch<SetStateAction<number>>;
 }
 
 export const SubscribeButton = ({
     channelId,
-    initialSubscribed,
+    isSubscribed,
+    setIsSubscribed,
+    setSubscribersCount,
 }: SubscribeButtonProps) => {
-    const [isSubscribed, setIsSubscribed] =
-        useState(initialSubscribed);
-
     const [loading, setLoading] = useState(false);
-
-    useEffect(() => {
-        setIsSubscribed(initialSubscribed);
-    }, [initialSubscribed]);
 
     const handleToggleSubscription = async () => {
         try {
@@ -30,6 +28,7 @@ export const SubscribeButton = ({
                 await channelService.toggleSubscription(channelId);
 
             setIsSubscribed(response.data.isSubscribed);
+            setSubscribersCount(response.data.subscribersCount);
 
             toast.success(
                 response.data.isSubscribed

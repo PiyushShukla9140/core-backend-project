@@ -8,10 +8,10 @@ export interface Channel {
     avatar: string;
     coverImage: string;
 
-    subscribersCount: number;
     channelsSubscribedToCount: number;
 
     isSubscribed: boolean;
+    subscribersCount: number;
 }
 
 export interface Subscriber {

@@ -1,4 +1,10 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useEffect, useState } from "react";
+
+import {
+    Avatar,
+    AvatarFallback,
+    AvatarImage,
+} from "@/components/ui/avatar";
 
 import { SubscribeButton } from "./subscribeButton";
 
@@ -11,6 +17,19 @@ interface ChannelHeaderProps {
 export const ChannelHeader = ({
     channel,
 }: ChannelHeaderProps) => {
+    const [isSubscribed, setIsSubscribed] = useState(
+        channel.isSubscribed
+    );
+
+    const [subscribersCount, setSubscribersCount] = useState(
+        channel.subscribersCount
+    );
+
+    useEffect(() => {
+        setIsSubscribed(channel.isSubscribed);
+        setSubscribersCount(channel.subscribersCount);
+    }, [channel]);
+
     return (
         <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
             <div className="flex items-center gap-5">
@@ -37,7 +56,7 @@ export const ChannelHeader = ({
                     </p>
 
                     <p className="text-sm text-muted-foreground">
-                        {channel.subscribersCount} Subscribers •{" "}
+                        {subscribersCount} Subscribers •{" "}
                         {channel.channelsSubscribedToCount} Following
                     </p>
                 </div>
@@ -45,8 +64,12 @@ export const ChannelHeader = ({
 
             <SubscribeButton
                 channelId={channel._id}
-                initialSubscribed={channel.isSubscribed}
+                isSubscribed={isSubscribed}
+                setIsSubscribed={setIsSubscribed}
+                setSubscribersCount={setSubscribersCount}
             />
         </div>
     );
-}
+};
+
+export default ChannelHeader;

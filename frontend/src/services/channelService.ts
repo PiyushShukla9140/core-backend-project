@@ -35,6 +35,7 @@ export const channelService = {
         const response = await api.post<
             ApiResponse<{
                 isSubscribed: boolean;
+                subscribersCount: number;
             }>
         >(`/subscriptions/c/${channelId}`);
 
