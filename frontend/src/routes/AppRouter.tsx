@@ -19,6 +19,7 @@ import PlaylistDetail from '@/pages/PlaylistDetails.tsx'
 import LikedVideos from '@/pages/LikedVideos.tsx'
 import Channel from '@/pages/Channel.tsx'
 import EditVideo from '@/pages/EditVideo.tsx'
+import Settings from '@/pages/Settings.tsx'
 
 export const router = createBrowserRouter([
     {
@@ -96,6 +97,10 @@ export const router = createBrowserRouter([
                         <EditVideo/>
                     </ProtectedRoute>
                 )
+            },
+            {
+                path:"/settings",
+                element:(<Settings/>)
             }
 
         ],
