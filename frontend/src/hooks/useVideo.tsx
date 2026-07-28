@@ -15,12 +15,10 @@ const useVideo = (videoId: string) => {
     useState(true);
 
   const [error, setError] = useState("");
-
-  useEffect(() => {
-    if (!videoId) return;
-
-    const fetchVideo = async () => {
+  const fetchVideo = async () => {
       try {
+        setLoading(true)
+        setError("")
         const response =
           await videoService.getVideoById(
             videoId
@@ -41,13 +39,17 @@ const useVideo = (videoId: string) => {
       }
     };
 
+  useEffect(() => {
+    if (!videoId) return;
     fetchVideo();
   }, [videoId]);
+  // as child component me videoId pass ho rha, fetch video nhi, isliye useCallback is not needed here
 
   return {
     video,
     loading,
     error,
+    refetch:fetchVideo,
   };
 };
 

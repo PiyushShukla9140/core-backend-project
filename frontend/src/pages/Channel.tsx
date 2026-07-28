@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 
-import { useChannel } from "@/hooks/useChannel";
-import { useChannelVideos } from "@/hooks/useChannelVideos";
+import { useChannel } from "@/hooks/useChannel.tsx";
+import { useChannelVideos } from "@/hooks/useChannelVideos.tsx";
 
 import LoadingSpinner  from "@/components/common/LoadingSpinner";
 import ErrorState from "@/components/common/ErrorState";

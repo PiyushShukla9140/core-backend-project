@@ -1,13 +1,13 @@
-
+import DashboardHeader from "@/components/dashboard/dashboardHeader";
+import StatsCards from "@/components/dashboard/statsCard";
+import DashboardTable from "@/components/dashboard/dashboardTable";
 
 const Dashboard = () => {
-  
-
   return (
-    <div className="p-8">
-      <h1 className="text-3xl font-bold">Dashboard</h1>
-
-      
+    <div className="container mx-auto max-w-7xl space-y-8 px-4 py-8">
+      <DashboardHeader />
+      <StatsCards />
+      <DashboardTable />
     </div>
   );
 };

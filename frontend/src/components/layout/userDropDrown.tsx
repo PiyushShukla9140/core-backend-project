@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import {
     History,
+    LayoutDashboard,
     ListVideo,
     LogOut,
     Settings,
@@ -119,7 +120,6 @@ function UserDropdown({
             replace: true,
         });
     };
-    console.log("Dropdown User:", user);
 
     return (
         <div
@@ -168,20 +168,39 @@ function UserDropdown({
             <Separator />
 
             <div className="py-2">
-              <NavLink
-                  to={`/channel/${user?.username}`}
-                  onClick={onClose}
-                  className={({ isActive }) =>
-                      `mx-2 flex items-center gap-3 rounded-lg px-3 py-2 transition-colors ${
-                          isActive
-                              ? "bg-muted font-medium"
-                              : "hover:bg-muted"
-                      }`
-                  }
-              >
-                  <User className="h-5 w-5" />
-                  <span>Your Channel</span>
-              </NavLink>
+                <NavLink
+                    to={`/channel/${user?.username}`}
+                    onClick={onClose}
+                    className={({ isActive }) =>
+                        `mx-2 flex items-center gap-3 rounded-lg px-3 py-2 transition-colors ${
+                            isActive
+                                ? "bg-muted font-medium"
+                                : "hover:bg-muted"
+                        }`
+                    }
+                >
+                    <User className="h-5 w-5" />
+                    <span>Your Channel</span>
+                </NavLink>
+
+                {/* NEW DASHBOARD LINK */}
+                <NavLink
+                    to="/dashboard"
+                    onClick={onClose}
+                    className={({ isActive }) =>
+                        `mx-2 flex items-center gap-3 rounded-lg px-3 py-2 transition-colors ${
+                            isActive
+                                ? "bg-muted font-medium"
+                                : "hover:bg-muted"
+                        }`
+                    }
+                >
+                    <LayoutDashboard className="h-5 w-5" />
+                    <span>Dashboard</span>
+                </NavLink>
+
+                <Separator className="my-2" />
+
                 {navigationItems.map((item) => {
                     const Icon = item.icon;
 
@@ -199,7 +218,6 @@ function UserDropdown({
                             }
                         >
                             <Icon className="h-5 w-5" />
-
                             <span>{item.label}</span>
                         </NavLink>
                     );
@@ -217,7 +235,6 @@ function UserDropdown({
                     className="mx-2 flex w-[calc(100%-1rem)] items-center gap-3 rounded-lg px-3 py-2 text-left transition-colors hover:bg-muted"
                 >
                     <Settings className="h-5 w-5" />
-
                     <span>Settings</span>
                 </button>
 
@@ -226,7 +243,6 @@ function UserDropdown({
                     className="mx-2 flex w-[calc(100%-1rem)] items-center gap-3 rounded-lg px-3 py-2 text-left text-red-500 transition-colors hover:bg-muted"
                 >
                     <LogOut className="h-5 w-5" />
-
                     <span>Logout</span>
                 </button>
             </div>

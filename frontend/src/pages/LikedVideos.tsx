@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-import { useLikedVideos } from "@/hooks/useLikedVideos";
+import { useLikedVideos } from "@/hooks/useLikedVideos.tsx";
 
 import VideoCard from "@/components/video/videoCard";
 import  LoadingSpinner from "@/components/common/LoadingSpinner";

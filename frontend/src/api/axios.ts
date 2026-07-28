@@ -18,9 +18,9 @@ const api = axios.create({
   // Because our backend uses jwt, refresh token, cookies
 
 
-  headers: {
-    "Content-Type": "application/json",
-  },//Most of our requests are JSON.
+  // headers: {
+  //   "Content-Type": "application/json",
+  // },//Most of our requests are JSON.
 });
 // Register all interceptors
 setupInterceptors(api);

@@ -287,6 +287,7 @@ const getVideoById = asyncHandler(async (req, res) => {
 
 const updateVideo = asyncHandler(async (req, res) => {
     const { videoId } = req.params
+    
     //TODO: update video details like title, description, thumbnail
 
 
@@ -295,7 +296,8 @@ const updateVideo = asyncHandler(async (req, res) => {
     }
 
     const { title, description } = req.body
-    const thumbnailLocalPath = req.files?.thumbnail?.[0]?.path
+    const thumbnailLocalPath = req.file?.path;
+    
 
     const currentVideo = await Video.findById(videoId);
      // check whether the video exists or not
