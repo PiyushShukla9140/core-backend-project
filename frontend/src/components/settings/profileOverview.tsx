@@ -3,9 +3,6 @@ import type { User } from "@/types/user.types";
 import {
     Card,
     CardContent,
-    CardDescription,
-    CardHeader,
-    CardTitle,
 } from "@/components/ui/card";
 
 interface ProfileOverviewProps {
@@ -16,32 +13,30 @@ const ProfileOverview = ({
     user,
 }: ProfileOverviewProps) => {
     return (
-        <Card>
-            <CardHeader>
-                <CardTitle>
-                    Settings
-                </CardTitle>
-
-                <CardDescription>
-                    Manage your account settings and profile.
-                </CardDescription>
-            </CardHeader>
+        <Card className="overflow-hidden">
 
             <CardContent className="p-0">
 
                 {/* Cover */}
 
-                <div className="relative h-56 overflow-hidden bg-muted">
+                {user.coverImage ? (
                     <img
                         src={user.coverImage}
                         alt={`${user.fullName} cover`}
-                        className="h-full w-full object-cover"
+                        className="h-48 w-full object-cover"
                     />
-                </div>
+                ) : (
+                    <div className="flex h-48 items-center justify-center bg-muted">
+                        <p className="text-sm text-muted-foreground">
+                            No cover image uploaded.
+                        </p>
+                    </div>
+                )}
 
                 {/* Avatar */}
 
                 <div className="relative -mt-16 ml-8">
+                    {user.avatar?
                     <img
                         src={user.avatar}
                         alt={user.fullName}
@@ -54,7 +49,11 @@ const ProfileOverview = ({
                             object-cover
                             shadow-lg
                         "
-                    />
+                    />:<div className="flex h-48 items-center justify-center bg-muted">
+                        <p className="text-sm text-muted-foreground">
+                            No avatar uploaded.
+                        </p>
+                    </div>}
                 </div>
 
                 {/* User */}

@@ -312,23 +312,49 @@ const getCurrentUser = asyncHandler(async(req,res)=>{
 })
 
 const updateAccountDetails = asyncHandler(async(req, res) => {
-    const {fullName, email} = req.body
+    const {fullName, email,username} = req.body
 
-    if (!fullName || !email) {
+    if (!fullName || !email||!username) {
         throw new ApiError(400, "All fields are required")
     }
+
+    const existingUser = await User.findOne({
+        $or: [
+            { email },
+            { username: username.toLowerCase() }
+        ],
+        _id: {
+            $ne: req.user._id
+        }
+    });
+
+    if (existingUser) {
+
+        if (existingUser.email === email) {
+            throw new ApiError(409, "Email is already in use.");
+        }
+
+        if (
+            existingUser.username === username.toLowerCase()
+        ) {
+            throw new ApiError(409, "Username is already taken.");
+        }
+
+    }
+
 
     const user = await User.findByIdAndUpdate(
         req.user?._id,
         {
             $set: {
                 fullName,
-                email: email
+                email: email,
+                username:username.toLowerCase()
             }
         },
         {new: true}
         
-    ).select("-password")
+    ).select("-password -refreshToken")
 
     return res
     .status(200)
@@ -369,7 +395,7 @@ const updateUserAvatar = asyncHandler(async(req,res)=>{
      // upar files use hua h because multiple file upload option dene the
     
     if(!avatarLocalPath){
-        new ApiError(400,"Avatar file is missing")
+        throw new ApiError(400,"Avatar file is missing")
     }
 
     const oldAvtar = req.user?.avatar
@@ -391,7 +417,7 @@ const updateUserAvatar = asyncHandler(async(req,res)=>{
     ).select("-password")
 
     if(oldAvtar){
-        await deleteFromCloudinary(avatar)
+        await deleteFromCloudinary(oldAvtar)
     }
 
     return res
