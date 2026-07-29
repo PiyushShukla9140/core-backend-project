@@ -9,7 +9,7 @@ import fs from "fs";
 
 
 import {Like} from "../models/like.model.js"
-
+import { Subscription} from "../models/subscription.model.js"
 // Helper function to pull Cloudinary Public ID from its long absolute secure URL link
 const getCloudinaryPublicId = (url) => {
     if (!url) return null;
@@ -229,10 +229,20 @@ const getVideoById = asyncHandler(async (req, res) => {
         throw new ApiError(400, "Invalid Video Id")
     }
 
-    const video = await Video.findById(videoId).populate("owner", "username fullName avatar")
+    const video = await Video.findByIdAndUpdate(
+        videoId,
+        {
+            $inc: {
+                views: 1,
+            },
+        },
+        {
+            new: true,
+        }
+    ).populate("owner", "username fullName avatar");
 
     if (!video) {
-        throw new ApiError(404, "Video doesn't exist")
+        throw new ApiError(404, "Video doesn't exist");
     }
 
     if (req.user?._id) {
@@ -272,6 +282,21 @@ const getVideoById = asyncHandler(async (req, res) => {
 // countDocuments gives the total number of likes for the video.
 // Like.exists checks whether the logged-in user has liked it. Using !! converts the result into a simple true or false.
 
+    const subscribersCount = await Subscription.countDocuments({
+        channel: video.owner._id,
+    });
+
+    let isSubscribed = false;
+
+    if (req.user?._id) {
+        isSubscribed = !!(
+            await Subscription.exists({
+                subscriber: req.user._id,
+                channel: video.owner._id,
+            })
+        );
+    }
+
 
     return res
         .status(200)
@@ -279,6 +304,12 @@ const getVideoById = asyncHandler(async (req, res) => {
                 200, 
                 {
                     ...video.toObject(),
+                    owner:{
+                        ...video.owner.toObject(),
+                        subscribersCount,
+                        isSubscribed,
+
+                    },
                     likesCount,
                     isLiked,
                 }, 

@@ -11,8 +11,23 @@ import {
 
 import UserDropdown from "./userDropDrown";
 
+import { useAppSelector } from "@/store/hooks";
+
 function UserMenu() {
+
+  const currentUser = useAppSelector(
+    (state)=>state.auth.user
+  )
   const [isOpen, setIsOpen] = useState(false);
+
+  const initials =
+  currentUser?.fullName
+    ?.trim()
+    .split(" ")
+    .map((word) => word[0])
+    .slice(0, 2)
+    .join("")
+    .toUpperCase() || "U";
 
   return (
     <div className="relative flex items-center gap-4">
@@ -30,10 +45,10 @@ function UserMenu() {
         onClick={() => setIsOpen((prev) => !prev)}
       >
         <Avatar className="h-10 w-10">
-          <AvatarImage src="" />
+          
 
           <AvatarFallback className="bg-red-500 text-white font-semibold">
-            PS
+            {initials}
           </AvatarFallback>
         </Avatar>
       </Button>

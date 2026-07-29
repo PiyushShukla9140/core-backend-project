@@ -67,7 +67,23 @@ const authSlice = createSlice({
             state.loading = false;
 
             state.error = null;
-        }
+        },
+        // this update current user was implemented because when i changed the username from the setting tab the redux store didnt get update 
+        // the redux still contained the old username
+        updateCurrentUser(
+            state,
+            action: PayloadAction<User>
+        ) {
+            state.user = action.payload;
+        },
+        // this updateAccessToken was implemented to handle the jwt expired error as access token was getting expired
+        updateAccessToken(
+            state,
+            action: PayloadAction<string>
+        ) {
+            state.accessToken = action.payload;
+        },
+
     },
 });
 
@@ -82,6 +98,8 @@ export const {
     loginSuccess,
     loginFailure,
     logout,
+    updateCurrentUser,
+    updateAccessToken
 } = authSlice.actions;
 
 export default authSlice.reducer;

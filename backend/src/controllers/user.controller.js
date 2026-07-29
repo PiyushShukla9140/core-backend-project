@@ -219,7 +219,7 @@ const logoutUser = asyncHandler(async(req,res)=>{
 
 const refreshAccessToken = asyncHandler(async(req,res)=>{
     // accesing the refresh token
-    const incomingRefreshToken = req.cookies.refreshToken || req.body
+    const incomingRefreshToken = req.cookies.refreshToken || req.body.refreshToken
     if(!incomingRefreshToken){
         throw new ApiError(401, "unauthorized request")
     }
@@ -253,10 +253,11 @@ const refreshAccessToken = asyncHandler(async(req,res)=>{
 
         const options = {
             httpOnly: true,
-            secure: true
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "lax",
         }
 
-        const {accessToken, newRefreshToken} = generateAccessAndRefreshToken(user._id)
+        const {accessToken, refreshToken: newRefreshToken,} = await generateAccessAndRefreshToken(user._id)
 
         return res
         .status(200)
@@ -270,7 +271,7 @@ const refreshAccessToken = asyncHandler(async(req,res)=>{
             )
         )
     } catch (error) {
-        throw new ApiError(401, error?.message || "Invalid refresh token")
+        throw new ApiError(401, "Refresh token expired or invalid")
     }
 })
 
@@ -501,6 +502,7 @@ const updateUserCoverImage = asyncHandler(async(req,res)=>{
 
 const getUserChannelProfile = asyncHandler(async(req,res)=>{
     const {username} = req.params
+    console.log("req.params.username =", req.params.username);
 
     if(!username?.trim()){
         throw new ApiError(400, "Username is missing")
@@ -567,6 +569,8 @@ const getUserChannelProfile = asyncHandler(async(req,res)=>{
     if (!channel?.length) {
         throw new ApiError(404, "channel does not exists")
     }
+
+    console.log(channel);
 
     return res
     .status(200)

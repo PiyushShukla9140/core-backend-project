@@ -2,7 +2,9 @@ export interface VideoOwner{
     _id:string,
     username:string,
     fullName:string,
-    avatar:string
+    avatar:string,
+    subscribersCount: number;
+    isSubscribed: boolean;
 }
 
 export interface Video{

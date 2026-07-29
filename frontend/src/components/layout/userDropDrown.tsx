@@ -120,6 +120,9 @@ function UserDropdown({
             replace: true,
         });
     };
+    
+
+
 
     return (
         <div
@@ -229,7 +232,7 @@ function UserDropdown({
             <div className="py-2">
                 <button
                     onClick={() => {
-                        console.log("Settings");
+                        navigate("/settings");
                         onClose();
                     }}
                     className="mx-2 flex w-[calc(100%-1rem)] items-center gap-3 rounded-lg px-3 py-2 text-left transition-colors hover:bg-muted"

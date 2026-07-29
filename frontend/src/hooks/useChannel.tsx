@@ -13,6 +13,9 @@ export const useChannel = (username: string) => {
             setLoading(true);
             setError(null);
 
+             console.log("Username from URL:", username);
+
+
             const response = await channelService.getChannel(username);
 
             setChannel(response.data);

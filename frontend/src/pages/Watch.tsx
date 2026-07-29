@@ -40,7 +40,7 @@ const  Watch = ()=> {
     )
   }
 
-  console.log(video.owner);
+  
 
   return (
     <div className="mx-auto max-w-[1700px] px-6 py-8">
@@ -65,9 +65,13 @@ const  Watch = ()=> {
 
         {/* channel Card */}
         <ChannelCard
+          channelId={video.owner._id}
           avatar={video.owner.avatar}
           channelName={video.owner.fullName}
           username={video.owner.username}
+          isSubscribed={video.owner.isSubscribed}
+          subscribersCount={video.owner.subscribersCount}
+
         />
         {/* comments */}
         <CommentSection

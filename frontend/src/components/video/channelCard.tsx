@@ -3,21 +3,43 @@ import { Link } from "react-router-dom";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "../ui/button";
 
+import { useEffect, useState } from "react";
+import { useAppSelector } from "@/store/hooks";
+import { SubscribeButton } from "../channel/subscribeButton"; //
+
 interface ChannelCardProps {
     channelName: string;
     avatar: string;
     username: string;
-    // later:
-    // channelId: string;
-    // isSubscribed: boolean;
-    // subscriberCount: number;
+    
+    channelId: string;
+    isSubscribed: boolean;
+    subscribersCount: number;
 }
 
 const ChannelCard = ({
     channelName,
     avatar,
     username,
+    channelId,
+    isSubscribed,
+    subscribersCount
 }: ChannelCardProps) => {
+    const currentUser = useAppSelector(
+        (state) => state.auth.user
+    );
+
+    const isOwnChannel = currentUser?._id === channelId;
+
+    const [subscribed, setSubscribed] = useState(isSubscribed);
+
+    const [count, setCount] = useState(subscribersCount);
+
+    useEffect(() => {
+        setSubscribed(isSubscribed);
+        setCount(subscribersCount);
+    }, [isSubscribed, subscribersCount]);
+    
     return (
         <div className="flex items-center justify-between rounded-xl border px-6 py-5">
             <Link
@@ -46,9 +68,14 @@ const ChannelCard = ({
                 </div>
             </Link>
 
-            <Button className="rounded-full">
-                Subscribe
-            </Button>
+            {!isOwnChannel && (
+                <SubscribeButton
+                    channelId={channelId}
+                    isSubscribed={subscribed}
+                    setIsSubscribed={setSubscribed}
+                    setSubscribersCount={setCount}
+                />
+            )}
         </div>
     );
 };

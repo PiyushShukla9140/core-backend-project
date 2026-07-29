@@ -1,6 +1,8 @@
 import { Pencil } from "lucide-react";
 
 import type { User } from "@/types/user.types";
+import { updateCurrentUser } from "@/features/auth/authSlice";
+import { useDispatch } from "react-redux";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -31,6 +33,7 @@ interface AccountInformationProps {
 }
 
 const AccountInformation = ({ user, refetch}: AccountInformationProps) => {
+    const dispatch = useDispatch()
     const [isEditing, setIsEditing] = useState(false);
     const [isSaving, setIsSaving] = useState(false);
 
@@ -73,6 +76,9 @@ const AccountInformation = ({ user, refetch}: AccountInformationProps) => {
                 }
             )
             toast.success(response.message)
+            dispatch(updateCurrentUser(response.data));
+
+            console.log(response)
 
             await refetch()
             setIsEditing(false)
@@ -247,3 +253,5 @@ const AccountInformation = ({ user, refetch}: AccountInformationProps) => {
 };
 
 export default AccountInformation;
+
+

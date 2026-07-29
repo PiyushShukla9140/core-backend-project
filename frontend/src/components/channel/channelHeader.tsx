@@ -10,6 +10,8 @@ import { SubscribeButton } from "./subscribeButton";
 
 import type { Channel } from "@/types/channel.types";
 
+import { useAppSelector } from "@/store/hooks";
+
 interface ChannelHeaderProps {
     channel: Channel;
 }
@@ -17,6 +19,19 @@ interface ChannelHeaderProps {
 export const ChannelHeader = ({
     channel,
 }: ChannelHeaderProps) => {
+
+    const currentUser = useAppSelector(
+        (state) => state.auth.user
+    );
+
+    const isOwnChannel =
+        currentUser?._id === channel?._id;
+    // these two current user and isOwnChannel was implemented to retsrict user to user to subscribe its own channel
+
+
+
+
+
     const [isSubscribed, setIsSubscribed] = useState(
         channel.isSubscribed
     );
@@ -62,12 +77,14 @@ export const ChannelHeader = ({
                 </div>
             </div>
 
-            <SubscribeButton
-                channelId={channel._id}
-                isSubscribed={isSubscribed}
-                setIsSubscribed={setIsSubscribed}
-                setSubscribersCount={setSubscribersCount}
-            />
+            {!isOwnChannel&&(
+                <SubscribeButton
+                    channelId={channel._id}
+                    isSubscribed={isSubscribed}
+                    setIsSubscribed={setIsSubscribed}
+                    setSubscribersCount={setSubscribersCount}
+                />
+            )}
         </div>
     );
 };
