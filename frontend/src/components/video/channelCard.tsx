@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "../ui/button";
+
 
 import { useEffect, useState } from "react";
 import { useAppSelector } from "@/store/hooks";
@@ -41,7 +41,7 @@ const ChannelCard = ({
     }, [isSubscribed, subscribersCount]);
     
     return (
-        <div className="flex items-center justify-between rounded-xl border px-6 py-5">
+        <div className="flex flex-col gap-4 rounded-xl border p-5 sm:flex-row sm:items-center sm:justify-between">
             <Link
                 to={`/channel/${username}`}
                 className="flex items-center gap-4 rounded-lg transition-opacity hover:opacity-90"
@@ -64,6 +64,9 @@ const ChannelCard = ({
 
                     <p className="text-sm text-muted-foreground">
                         @{username}
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                        {count.toLocaleString()} subscribers
                     </p>
                 </div>
             </Link>

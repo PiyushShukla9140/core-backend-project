@@ -1,4 +1,4 @@
-import { Pencil } from "lucide-react";
+
 
 import type { User } from "@/types/user.types";
 import { updateCurrentUser } from "@/features/auth/authSlice";
@@ -78,7 +78,7 @@ const AccountInformation = ({ user, refetch}: AccountInformationProps) => {
             toast.success(response.message)
             dispatch(updateCurrentUser(response.data));
 
-            console.log(response)
+            
 
             await refetch()
             setIsEditing(false)

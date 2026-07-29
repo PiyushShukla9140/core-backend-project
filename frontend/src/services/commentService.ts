@@ -1,6 +1,6 @@
 import api from "@/api/axios"
 
-import type { Comment, CommentResponse } from "@/types/comment.types"
+import type {  CommentResponse } from "@/types/comment.types"
 
 const CommentService = {
 

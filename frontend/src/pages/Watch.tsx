@@ -7,7 +7,7 @@ import VideoDescription from "@/components/video/videoDescription"
 import SuggestedVideos from "@/components/video/suggestedVideos"
 import useVideos from "@/hooks/useVideos"
 import CommentSection from "@/components/comments/CommentSection"
-import VideoActions from "@/components/video/VideoActions"
+
 const  Watch = ()=> {
   const{videoId} = useParams()
 
@@ -43,8 +43,8 @@ const  Watch = ()=> {
   
 
   return (
-    <div className="mx-auto max-w-[1700px] px-6 py-8">
-      <div className="grid grid-cols-3 gap-8">
+    <div className="mx-auto max-w-[1700px] px-3 py-4 sm:px-6 sm:py-8">
+      <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
         {/* This above grid tailwind is temporary */}
         {/* left side */}
         <div className="space-y-5 lg:col-span-2">

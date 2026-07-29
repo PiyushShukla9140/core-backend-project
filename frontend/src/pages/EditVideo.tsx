@@ -38,7 +38,7 @@ const EditVideo = ()=>{
     const navigate = useNavigate()
     const [isUpdating, setIsUpdating] = useState(false);
     const {videoId} = useParams()
-    const {video,loading,error,refetch} = useVideo(videoId ?? "");
+    const {video,loading,error} = useVideo(videoId ?? "");
     const form = useForm<EditVideoFormData>({
         resolver: zodResolver(EditVideoSchema),
         defaultValues: {
@@ -125,7 +125,7 @@ const EditVideo = ()=>{
         );
     }
 
-    console.log(thumbnail);
+    
 
     return (
         <div className="container mx-auto max-w-4xl py-8">

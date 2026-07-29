@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useDashboardVideos } from "@/hooks/useDashboardVideos";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Pencil, Trash2, Video } from "lucide-react";
+import { Pencil,  Video } from "lucide-react";
 import DeleteVideoDialog from "@/components/dashboard/deleteVideoDialog";
 import TogglePublishButton from "@/components/dashboard/TogglePublishButton";
 import {
@@ -105,8 +105,8 @@ const DashboardTable = () => {
             <CardTitle>Your Videos</CardTitle>
         </CardHeader>
 
-        <CardContent>
-            <Table>
+        <CardContent className="overflow-x-auto">
+            <Table className="min-w-[900px]">
                 <TableHeader>
                     <TableRow>
                         <TableHead>Video</TableHead>

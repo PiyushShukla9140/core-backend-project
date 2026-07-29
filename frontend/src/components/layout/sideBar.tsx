@@ -52,7 +52,7 @@ function Sidebar() {
 
   return (
     <aside
-      className={`sticky top-16 h-[calc(100vh-4rem)] border-r bg-background transition-all duration-300 ease-in-out ${
+      className={` lg:sticky lg:top-24 top-16 h-[calc(100vh-4rem)] border-r bg-background transition-all duration-300 ease-in-out ${
         isOpen ? "w-64" : "w-20"
       }`}
     >

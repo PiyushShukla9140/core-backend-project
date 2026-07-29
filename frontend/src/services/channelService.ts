@@ -16,7 +16,7 @@ interface ApiResponse<T> {
 
 export const channelService = {
     async getChannel(username: string) {
-        console.log("Calling:", `/users/c/${username}`);
+       
         const response = await api.get<ApiResponse<Channel>>(
             `/users/c/${username}`
         );

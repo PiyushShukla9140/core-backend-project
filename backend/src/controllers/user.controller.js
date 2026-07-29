@@ -21,7 +21,7 @@ const registerUser = asyncHandler(async(req,res)=>{
     // return response
     
     const {fullName, email, username, password} = req.body
-    console.log("email: ",email)
+    
 
     // if(fullName === ""){
     //     throw new ApiError(400,"FullName is required")
@@ -92,12 +92,12 @@ const registerUser = asyncHandler(async(req,res)=>{
 const generateAccessAndRefreshToken = async(userId)=>{
     try {
         const user = await User.findById(userId)
-          console.log("User found:", user?._id)
+          
         const accessToken=  user.generateAccessToken()
-        console.log("Access token generated")
+        
         // 
         const refreshToken = user.generateRefreshToken()
-        console.log("Refresh token generated")
+        
         // refresh token ko hum database me rkhte h
         // access token user ko de dete h
         // now saving the access token in the database
@@ -107,7 +107,7 @@ const generateAccessAndRefreshToken = async(userId)=>{
         // now the the refresh token has been added to the user model
         // ab user ko save bhi karana h
         await user.save({validateBeforeSave:false})
-          console.log("User saved")
+          
         // yaha pe mongoose ke model kick in ho jate h 
         // user odel me humne save kraya tha ke passord field bhi requiered h
         // but yaha pe password hai hi nhi 
@@ -502,7 +502,7 @@ const updateUserCoverImage = asyncHandler(async(req,res)=>{
 
 const getUserChannelProfile = asyncHandler(async(req,res)=>{
     const {username} = req.params
-    console.log("req.params.username =", req.params.username);
+    
 
     if(!username?.trim()){
         throw new ApiError(400, "Username is missing")
@@ -570,7 +570,7 @@ const getUserChannelProfile = asyncHandler(async(req,res)=>{
         throw new ApiError(404, "channel does not exists")
     }
 
-    console.log(channel);
+    
 
     return res
     .status(200)

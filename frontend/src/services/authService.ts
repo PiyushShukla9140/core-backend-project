@@ -3,7 +3,6 @@ import { API_ENDPOINTS } from "../api/endpoints.ts";
 
 import type {
     LoginRequest,
-    SignupRequest,
     AuthResponse,
 } from "../types/auth.types.ts";
 

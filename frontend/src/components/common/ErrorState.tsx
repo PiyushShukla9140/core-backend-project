@@ -22,7 +22,7 @@ interface ErrorStateProps{
 }
 
 const ErrorState = ({
-  title="Something went wrong",
+  
   message="An unexpected error occured",
   onRetry,
 }: ErrorStateProps) => {

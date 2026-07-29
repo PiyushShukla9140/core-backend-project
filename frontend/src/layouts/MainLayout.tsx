@@ -1,4 +1,3 @@
-import React from 'react'
 
 import { Outlet } from 'react-router-dom'
 import Navbar from '@/components/layout/navbar'
@@ -16,7 +15,7 @@ function MainLayout() {
           <div className="flex">
             <Sidebar />
 
-            <main className="flex-1 p-6">
+            <main className="flex-1 px-3 py-4 sm:p-6">
               <Outlet />
             </main>
           </div>

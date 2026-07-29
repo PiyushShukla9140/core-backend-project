@@ -2,7 +2,7 @@ import { useState } from "react";
 import { AxiosError } from "axios";
 
 import  CommentService  from "@/services/commentService";
-import { toast } from "sonner"
+
 
 
 export const useDeleteComment = () => {

@@ -30,7 +30,7 @@ import {
 } from "@/components/ui/form";
 
 import {Eye,EyeOff} from "lucide-react"
-import { Controller } from "react-hook-form";
+
 import { Button } from "../ui/button";
 
 import authService from "@/services/authService";
@@ -343,7 +343,7 @@ const SignUpForm = ()=> {
             <FormField
                 control={form.control}
                 name="avatar"
-                render={({ field, fieldState }) => (
+                render={({ field, }) => (
                     <FormItem>
                     <FormLabel>Avatar *</FormLabel>
 
@@ -381,7 +381,7 @@ const SignUpForm = ()=> {
             <FormField
                 control={form.control}
                 name="coverImage"
-                render={({ field, fieldState }) => (
+                render={({ field,  }) => (
                     <FormItem>
                     <FormLabel>Cover Image</FormLabel>
 

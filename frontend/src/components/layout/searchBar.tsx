@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Loader2, Search, X } from "lucide-react";
+import {  Search, X } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 import { Input } from "@/components/ui/input";

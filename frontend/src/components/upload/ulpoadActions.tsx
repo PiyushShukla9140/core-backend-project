@@ -1,6 +1,18 @@
 import { Button } from "@/components/ui/button";
 import { X,UploadCloud } from "lucide-react";
 
+import { useNavigate } from "react-router-dom";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 interface UploadActionsProps {
     isUploading: boolean;
@@ -8,6 +20,7 @@ interface UploadActionsProps {
 }
 
 const UploadActions = ({isUploading,uploadProgress}:UploadActionsProps) => {
+  const navigate = useNavigate()
 
   return (
     <div className="mt-8 flex justify-end gap-4">
@@ -27,13 +40,43 @@ const UploadActions = ({isUploading,uploadProgress}:UploadActionsProps) => {
       )}
 
 
-      <Button
-        variant="outline"
-        type="button"
-      > 
-        <X className="mr-2 h-4 w-4"/>
-        Cancel
-      </Button>
+      <AlertDialog>
+        <AlertDialogTrigger asChild>
+          <Button
+            variant="outline"
+            type="button"
+            disabled={isUploading}
+          >
+            <X className="mr-2 h-4 w-4" />
+            Cancel
+          </Button>
+        </AlertDialogTrigger>
+
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>
+              Discard upload?
+            </AlertDialogTitle>
+
+            <AlertDialogDescription>
+              Your upload hasn't been published yet. If you leave this page,
+              all entered information and selected files will be lost.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+
+          <AlertDialogFooter>
+            <AlertDialogCancel>
+              Continue Editing
+            </AlertDialogCancel>
+
+            <AlertDialogAction
+              onClick={() => navigate("/")}
+            >
+              Discard Upload
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
 
       <Button
         type="submit"

@@ -19,7 +19,7 @@ const uploadOnCloudinary = async (localFilePath)=>{
             resource_type:"auto"
         })
         // file has been uploaded successfull
-        console.log("file is uploaded on cloudinary ", response.url);
+       
         // to delete file from the server we are going to use unlinkSync
         fs.unlinkSync(localFilePath)
         return response;
@@ -45,8 +45,8 @@ const deleteFromCloudinary = async(cloudinaryUrl)=>{
         const response = await cloudinary.uploader.destroy(publicId)
         if(response?.result !== "ok"){
         throw new ApiError(500, "Failed to delete image")
-}
-        console.log("Deleted from Cloudinary:", response);
+    }
+        
         return response
     }catch(error){
         console.error("Error while deleting the file from cloudinary")

@@ -41,15 +41,12 @@ const CommentCard = ({comment,onCommentsUpdated}:CommentCardProps)=>{
     const currentUser = useAppSelector(
         (state) => state.auth.user
     );
-    console.log(currentUser);
-    console.log(comment.owner);
+    
 
     const isOwner =
         currentUser?._id === comment.owner._id;
     
-    console.log("Current User:", currentUser?._id);
-    console.log("Comment Owner:", comment.owner._id);
-    console.log("isOwner:", isOwner);
+    
 
     const [isEditing, setIsEditing] = useState(false);
 

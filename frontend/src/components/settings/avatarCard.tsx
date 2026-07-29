@@ -24,11 +24,10 @@ interface AvatarCardProps {
 
 
 const AvatarCard = ({ user,refetch }: AvatarCardProps) => {
-    console.log("AvatarCard render");
-    console.log("refetch prop:", refetch);
+    
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const [isUploading, setIsUploading] = useState(false);
-    const [isDeleting, setIsDeleting] = useState(false);
+    
 
     const handleFileChange = (
         event: React.ChangeEvent<HTMLInputElement>
@@ -53,7 +52,7 @@ const AvatarCard = ({ user,refetch }: AvatarCardProps) => {
             const formData = new FormData();
             formData.append("avatar", selectedFile);
 
-            const response = await settingService.updateAvatar(formData);
+             await settingService.updateAvatar(formData);
 
 
             await refetch();
@@ -64,7 +63,7 @@ const AvatarCard = ({ user,refetch }: AvatarCardProps) => {
                 fileInputRef.current.value = "";
             }
         } catch (error) {
-            console.log(error)
+            
             if (axios.isAxiosError(error)) {
                 toast.error(
                     error.response?.data?.message ??
