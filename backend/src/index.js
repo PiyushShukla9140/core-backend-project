@@ -11,15 +11,17 @@ dotenv.config({
 })
 
 // as connectDB() is an async function whoch returns promise
+const PORT = process.env.PORT || 8000;
+
 connectDB()
-.then(()=>{
-    app.listen(process.env.PORT||8000,()=>{
-        console.log(`Server is running on port ${PORT}`)
-    })
-})
-.catch((err)=>{
-    console.log("MongoDB connection error!!",err)
-})
+  .then(() => {
+    app.listen(PORT, () => {
+      console.log(`Server is running on port ${PORT}`);
+    });
+  })
+  .catch((err) => {
+    console.log("MongoDB connection error!!", err);
+  });
 
 
 
